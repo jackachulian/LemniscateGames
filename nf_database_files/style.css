@@ -1,0 +1,321 @@
+body {
+    background-color: #F8FAFC;
+    font-family: "Microsoft Sans Serif Regular", "Consolas", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+  }
+  img {
+    -ms-interpolation-mode: bicubic;
+  }
+  .titlebox {
+    background-color: #007EA7;
+    border: 4px solid #003459;
+    display: block;
+    width: 100%;
+    text-align: center;
+    color: #F8FAFC;
+    margin: 16px;
+    padding: 8px;
+  }
+  .chartitlebox {
+    display: block;
+    background-color: #007EA7;
+    border: 4px solid #003459;
+    color: #F8FAFC;
+    margin: 4px;
+    padding: 2px;
+  }
+  .chardiv {
+    page-break-before:always;
+    display: block;
+    min-height: 690px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .chartitlebox img {
+    display: inline;
+    font-size: 32px;
+    vertical-align: middle;
+    margin: 2px;
+
+    border: 1px solid #07263f;
+    background-color: rgb(10, 135, 177)
+  }
+  .chartitlebox h1 {
+    display: inline;
+    font-size: 32px;
+    vertical-align: middle;
+    margin-left: 15px;
+  }
+  .portrait {
+    background-color: #00A8E8;
+    border: 4px solid #007EA7;
+    margin: 5px;
+    padding: 3px;
+    display: block;
+    width: 20%;
+    height: auto;
+    min-height: 185px;
+    min-width: 160px;
+    max-height: 280px;
+    max-width: 240px;
+    float: right;
+  }
+  .infobox {
+    page-break-inside: avoid;
+    background-color: #00A8E8;
+    border: 4px solid #007EA7;
+    display: block;
+    float: left;
+    height: 280px;
+    width: auto;
+    min-width: 300px;
+    max-width: 500px;
+    margin: 5px;
+    padding: 3px;
+  }
+  .stats {
+    min-width: 110px;
+    width: 20%;
+    height: auto;
+  }
+  .stats div {
+    margin: 3px;
+    padding: 3px;
+    font-size: 18px;
+    background-color: #007EA7;
+    border: 2px solid #003459;
+  }
+  .stats div span {
+    font-family: "Consolas", "Lucida Consolas MS", 'Courier New', Courier, monospace;
+    background-color: rgb(39, 152, 217);
+    border: 1px solid #07263f;
+    border-radius: 1px;
+  }
+  .desc {
+    display: block;
+    width: 50%;
+    min-width: 450px;
+    max-width: none;
+    height: auto;
+    padding: 8px;
+  }
+  .content {
+    height: 420px;
+  }
+  .page-title h1 {
+    text-align: center;
+  }
+  .page-title h2 {
+    text-align: center;
+  }
+  #roster {
+    display: grid;
+    gap: 1rem;
+
+    background-color: #00A8E8;
+    border: 3px solid #007EA7;
+    padding: 0.25rem;
+    padding-bottom: 0.75rem;
+    width: auto;
+
+    grid-template-columns: repeat(auto-fit, minmax(120px, 120px));
+    grid-auto-rows: 120px;
+  }
+  #roster div {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+    position: relative;
+    /* flex-direction: column;
+    justify-content: left;
+    align-items: left; */
+    font-size: 12px;
+    background-color: #007EA7;
+    border: 4px solid #003459;
+    color: #F8FAFC;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    transition: all 200ms;
+  }
+  #roster div a {
+    color: #F8FAFC;
+    text-decoration: none;
+  }
+  #roster div a img {
+    width: 100%;
+    height: 100%;
+  } 
+  #roster div a span {
+    position: absolute;
+    width: 110px;
+    bottom: 2px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-size: 14px;
+    text-shadow: 2px 2px 2px #07263f
+  } 
+  #roster div:hover {
+    background-color: rgb(29, 154, 185);
+    border: 4px solid #4faff3;
+    color: #F8FAFC;
+    text-decoration: none;
+  }
+  .refreshButton {
+    width: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #00A8E8;
+    background: rgb(209, 219, 219);
+    margin: 5px;
+    padding: 2px;
+    font-size: 120%;
+    text-align: center;
+  }
+  .move {
+    display: flex;
+    text-decoration: none;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    font-size: 1.2rem;
+    color: #F8FAFC;
+    background-color: #007EA7;
+    border: 2px solid #003459;
+
+    height: 100%;
+    width: 100%;
+    transition: all 200ms;
+    overflow: hidden;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .move span {
+    margin: 1px;
+    padding-left: 3px;
+    font-family: "Consolas", "Lucida Consolas MS", 'Courier New', Courier, monospace;
+    font-size: 95%;
+    background-color: rgb(12, 101, 153);
+    border: 1px solid #07263f;
+    border-radius: 1px;
+  }
+  .move:hover {
+    background-color: rgb(29, 154, 185);
+    border: 2px solid #4faff3;
+  }
+
+  .movelist {
+    page-break-inside: avoid;
+    background-color: #00A8E8;
+    border: 3px solid #007EA7;
+    padding-right: 4px;
+    padding-bottom: 4px;
+
+    width: 98.5%;
+    margin: 0 auto;
+    display: grid;
+    gap: 1.2rem;
+
+    grid-template-columns: repeat(auto-fit, minmax(142px, 1fr))
+  }
+
+
+
+  .allmoves {
+    display: grid;
+    width: 98%;
+    margin: 1rem auto;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(285px, 1fr))
+  }
+  .movediv {
+    page-break-inside: avoid;
+
+    border: 2px solid rgb(62, 66, 70);
+    background-color: rgb(211, 217, 223);
+    color: rgb(24, 28, 32)
+  }
+  .movediv h2 {
+    margin: 10px;
+    font-size: 22px;
+  }
+  .movediv p {
+    margin: 8px 12px;
+    font-size: 16px;
+  }
+
+  .movedata {
+    display: inline-block;
+    margin: 8px;
+    padding: 4px 12px;
+    background-color: rgb(196, 199, 202);
+    border: 1px solid rgb(70, 71, 73);
+    font-size: 18px;
+  }
+  .movedata h4 {
+    display: inline;
+    margin-right: 6px;
+    padding: 2px;
+    background-color: rgb(175, 180, 189);
+    border: 1px solid rgb(58, 59, 61);
+  }
+  .movedata p {
+    display: inline;
+    margin-right: 6px;
+    padding: 2px;
+    background-color: rgb(158, 162, 167);
+    border: 1px solid rgb(58, 59, 61);
+  }
+  .movedata span {
+    display: inline;
+  }
+
+  .moveimagebox img {
+    margin: 10px;
+    position: relative;
+  }
+
+  @keyframes projectile_forward {
+     from { 
+       margin-left: 0px;
+       margin-right: 180px; 
+      } to { 
+        margin-left: 180px;
+        margin-right: 0px; 
+      }  
+  }
+
+  @keyframes projectile_forwardshort {
+    from { 
+      margin-left: 0px;
+      margin-right: 100px; 
+     } to { 
+       margin-left: 100px;
+       margin-right: 0px; 
+     }  
+ }
+
+  @keyframes projectile_diagdown {
+    from { 
+      margin-left: 0px;
+      margin-top: 0px;
+      margin-right: 100px;
+      margin-bottom: 50px;
+     } to { 
+       margin-left: 100px;
+       margin-top: 50px;
+       margin-right: 0px;
+       margin-bottom: 0px;
+     }  
+  }
+
+  @keyframes projectile_acceldown {
+    from { 
+      margin-top: 0px;
+      margin-bottom: 120px; 
+     } to { 
+       margin-top: 120px;
+       margin-bottom: 0px; 
+     }  
+  }
+
+     

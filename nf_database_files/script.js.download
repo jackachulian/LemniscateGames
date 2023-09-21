@@ -1,0 +1,286 @@
+// Unified site-wide Javascript, mostly used for the for the NF Guidebook
+
+    function loadNfData() {
+
+        let data;
+        fetch("/nf/data")
+        .then(res => {
+            return res.json();
+        })
+        .then(dataGet => {
+            data = dataGet; 
+
+        if (!data) console.error("Error retrieving NF data!")
+        console.log(data)
+
+        // Roster
+        var charListElem = document.getElementById("roster")
+        charListElem.innerHTML = "";
+        data.roster.forEach(c => {
+
+            var char = data.fighters.find(t => t.dir == c);
+
+            var charContainer = document.createElement("div")
+            charContainer.setAttribute("class", `container`) 
+            var charElem = document.createElement("a");
+            charElem.setAttribute("href", `${window.location.pathname}#${c}`) 
+            var charImage = document.createElement("img")
+            charImage.setAttribute("src", `/nf/${c}/img/${char.icon}`);
+            charElem.appendChild(charImage);
+            var charNameElem = document.createElement("span");
+            charNameElem.innerHTML = char.name;
+            charElem.appendChild(charNameElem);
+
+            charContainer.appendChild(charElem);  
+            charListElem.appendChild(charContainer);   
+        })
+
+        // Character Page for all characters
+        data.roster.forEach(c => {
+            var char = data.fighters.find(t => t.dir == c);
+
+            var charDiv = document.createElement("div")
+            charDiv.setAttribute("id", c);
+            charDiv.setAttribute("class", "chardiv");
+
+            var titleBox = document.createElement("div")
+            titleBox.setAttribute("class", "chartitlebox");
+
+            var titleIconLink = document.createElement("a");
+            titleIconLink.setAttribute("href", `${window.location.pathname}#roster`)
+            var titleIcon = document.createElement("img");
+            titleIcon.setAttribute("src", `/nf/${c}/img/${char.icon}`);
+            titleIcon.setAttribute("height", 60);
+            titleIcon.setAttribute("width", 60)
+            titleIconLink.appendChild(titleIcon); 
+            titleBox.appendChild(titleIconLink); 
+
+            var title = document.createElement("h1")
+            title.innerHTML = char.name
+            titleBox.appendChild(title)
+
+            charDiv.appendChild(titleBox)
+
+            var stats = document.createElement("div");
+            stats.setAttribute("class", "infobox stats");
+
+            var statsToList = [
+                { name: "LIFE", value: char.life },
+                { name: "ATTACK", value: char.atk },
+                { name: "RANGE", value: char.range },
+                { name: "SPEED", value: char.speed },
+            ]
+
+            for (i = 0; i < statsToList.length; i++) {
+                var statElem = document.createElement("div")
+                var statLabel = document.createElement("span")
+                statLabel.innerHTML = statsToList[i].name
+                statElem.appendChild(statLabel)
+                statElem.innerHTML = statElem.innerHTML + " " + statsToList[i].value
+                stats.appendChild(statElem)
+            }
+
+            charDiv.appendChild(stats);
+
+            var portrait = document.createElement("img");
+            portrait.setAttribute("src", `/nf/${c}/img/${char.large}`);
+            portrait.setAttribute("class", "portrait");
+            portrait.setAttribute("height", 280);
+            portrait.setAttribute("width", 240)
+            charDiv.appendChild(portrait); 
+
+            var desc = document.createElement("div");
+            desc.setAttribute("class", "infobox desc");
+
+            var descTitle = document.createElement("h3")
+            descTitle.innerHTML = "Description"
+            desc.appendChild(descTitle)
+
+            var description = document.createElement("p")
+            description.innerHTML = char.desc
+            desc.appendChild(description)
+
+            if (char.tips) {
+                var tips = document.createElement("p")
+                tips.innerHTML = char.tips
+                desc.appendChild(tips)
+            }
+
+            charDiv.appendChild(desc)
+
+            var movesToList = char.moves.filter(m => !m.hidden)
+
+            var moveList = document.createElement("div")
+            moveList.setAttribute("class", "movelist");
+            movesToList.forEach(m => {
+                var moveElem = document.createElement("a")
+                moveElem.setAttribute("class", "move");
+                moveElem.setAttribute("href", `${window.location.pathname}#${c}-${m.name.toLowerCase().replace(/ /g, "-")}`);
+                var inputLabel = document.createElement("span")
+                inputLabel.innerHTML = m.input || "None"
+                moveElem.appendChild(inputLabel)
+                moveElem.innerHTML = moveElem.innerHTML + " " + m.name
+                moveList.appendChild(moveElem)
+            });
+
+            charDiv.appendChild(moveList)
+
+            var allMoves = document.createElement("div")
+            allMoves.setAttribute("class", "allmoves")
+
+            movesToList.forEach(m => {
+                var moveDiv = document.createElement("div")
+                moveDiv.setAttribute("class", "movediv");
+                moveDiv.setAttribute("id", `${c}-${m.name.toLowerCase().replace(/ /g, "-")}`)
+
+                var moveTitle = document.createElement("h2")
+                moveTitle.setAttribute("class", "movetitle");
+                moveTitle.innerHTML = m.name
+                moveDiv.appendChild(moveTitle);
+
+                var moveData = document.createElement("div")
+                moveData.setAttribute("class", "movedatabox")
+
+                    var moveInput = document.createElement("div")
+                    moveInput.setAttribute("class", "movedata")
+
+                    var moveInputLabel = document.createElement("h4")
+                    moveInputLabel.innerHTML = "Input"
+                    moveInput.appendChild(moveInputLabel)
+                    var moveInputValue = document.createElement("span")
+                    moveInputValue.innerHTML = m.input || "None"
+                    moveInput.appendChild(moveInputValue)
+
+                    moveData.appendChild(moveInput)
+
+                    var moveStat;
+                    var moveStatLabel;
+                    var moveStatValue;
+
+                    if (m.cost) {
+                        moveStat = document.createElement("div")
+                        moveStat.setAttribute("class", "movedata")
+                        moveStatLabel = document.createElement("h4")
+                        moveStatLabel.innerHTML = "Cost"
+                        moveStat.appendChild(moveStatLabel)
+                        moveStatValue = document.createElement("span")
+                        moveStatValue.innerHTML = (m.cost/1000) + " bar" + (m.cost === 1000 ? "" : "s")
+                        moveStat.appendChild(moveStatValue)
+                        moveData.appendChild(moveStat)
+                    }
+
+                    if (m.dmg) {
+                        moveStat = document.createElement("div")
+                        moveStat.setAttribute("class", "movedata")
+                        moveStatLabel = document.createElement("h4")
+                        moveStatLabel.innerHTML = "Damage"
+                        moveStat.appendChild(moveStatLabel)
+                        moveStatValue = document.createElement("span")
+                        moveStatValue.innerHTML = m.dmg
+                        moveStat.appendChild(moveStatValue)
+                        moveData.appendChild(moveStat)
+                    }
+
+                    if (m.speed) {
+                        moveStat = document.createElement("div")
+                        moveStat.setAttribute("class", "movedata")
+                        moveStatLabel = document.createElement("h4")
+                        moveStatLabel.innerHTML = "Speed"
+                        moveStat.appendChild(moveStatLabel)
+                        moveStatValue = document.createElement("span")
+                        moveStatValue.innerHTML = m.speed
+                        moveStat.appendChild(moveStatValue)
+                        moveData.appendChild(moveStat)
+                    }
+
+                    if (m.range) {
+                        moveStat = document.createElement("div")
+                        moveStat.setAttribute("class", "movedata")
+                        moveStatLabel = document.createElement("h4")
+                        moveStatLabel.innerHTML = "Range"
+                        moveStat.appendChild(moveStatLabel)
+                        moveStatValue = document.createElement("span")
+                        moveStatValue.innerHTML = m.range
+                        moveStat.appendChild(moveStatValue)
+                        moveData.appendChild(moveStat)
+                    }
+
+                moveDiv.appendChild(moveData)
+
+                var descBox = document.createElement("div")
+                descBox.setAttribute("class", "movedatabox")
+
+                    // var descHeader = document.createElement("h2")
+                    // descHeader.innerHTML = "Description"
+                    // descBox.appendChild(descHeader)
+                    var description = document.createElement("p")
+                    description.innerHTML = m.desc || "";
+                    descBox.appendChild(description)
+
+                moveDiv.appendChild(descBox)
+
+                var imagebox = document.createElement("div")
+                imagebox.setAttribute("class", "moveimagebox")
+
+                if (m.img) {
+                    var image = document.createElement("img")
+                    image.setAttribute("src", `/nf/${c}/img/${m.img}`)
+                    image.setAttribute("alt", m.img)
+                    imagebox.appendChild(image)
+                }
+                if (m.img2) {
+                    var image2 = document.createElement("img")
+                    image2.setAttribute("src", `/nf/${c}/img/${m.img2}`)
+                    image.setAttribute("alt", m.img2)
+                    if (m.x2) image2.style.left = m.x2 + "px";
+                    if (m.y2) image2.style.bottom = m.y2 + "px";
+                    if (m.vel) {
+                        if (!m.path || m.path == "forward") {
+                            image2.style.animation = `projectile_forward ${180/(m.vel*60)}s linear 0s infinite running`;
+                        } else if (m.path == "forwardshort") {
+                            image2.style.animation = `projectile_forwardshort ${100/(m.vel*60)}s linear 0s infinite running`;
+                        } else if (m.path == "diagdown") {
+                            image2.style.animation = `projectile_diagdown ${111/(m.vel*60)}s linear 0s infinite running`;
+                        } else if (m.path == "acceldown") {
+                            image2.style.animation = `projectile_acceldown ${120/(m.vel*60)}s cubic-bezier(.74,.21,1,1) 0s infinite running`;
+                        } else if (m.path == "accelforward") {
+                            image2.style.animation = `projectile_forward ${180/(m.vel*60)}s cubic-bezier(.74,.21,1,1) 0s infinite running`;
+                        }
+                    }
+                    imagebox.appendChild(image2)
+                }
+
+                var attach;
+                if (m.attach) {
+                    m.attach.forEach(a => {
+                        attach = document.createElement("img")
+                        attach.setAttribute("src", `/nf/${c}/img/${a}`)
+                        image.setAttribute("alt", a)
+                        if (m.xa) attach.style.left = m.xa + "px";
+                        if (m.vela) {
+                            if (!m.patha || m.patha == "forward") {
+                                attach.style.animation = `projectile_forward ${180/(m.vela*60)}s linear 0s infinite running`;
+                            } else if (m.patha == "forwardshort") {
+                                attach.style.animation = `projectile_forwardshort ${100/(m.vela*60)}s linear 0s infinite running`;
+                            } else if (m.path == "diagdown") {
+                                attach.style.animation = `projectile_diagdown ${111/(m.vela*60)}s linear 0s infinite running`;
+                            } else if (m.path == "acceldown") {
+                                attach.style.animation = `projectile_acceldown ${120/(m.vela*60)}s cubic-bezier(.74,.21,1,1) 0s infinite running`;
+                            }
+                        }
+                    if (m.ya) attach.style.bottom = m.ya + "px";
+                        imagebox.appendChild(attach)
+                    })
+                }
+
+                if (m.img) moveDiv.appendChild(imagebox);
+
+                allMoves.appendChild(moveDiv)
+            })
+
+            charDiv.appendChild(allMoves)
+
+            document.body.appendChild(charDiv)
+        })
+    });   
+    }
